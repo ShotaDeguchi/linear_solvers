@@ -8,7 +8,7 @@ import numpy as np
 
 # ==============================================================================
 
-def ConjGradSq(A, b, x, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
+def ConjGradSq(A, b, x, tol=1e-9, ord=np.inf, maxiter=int(1e3)):
     """
     Conjugate Gradient Squared
     """
@@ -16,7 +16,7 @@ def ConjGradSq(A, b, x, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
 
 # ==============================================================================
 
-def BiConjGrad(A, b, x, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
+def BiConjGrad(A, b, x, tol=1e-9, ord=np.inf, maxiter=int(1e3)):
     """
     Bi-Conjugate Gradient
     """
@@ -24,7 +24,7 @@ def BiConjGrad(A, b, x, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
 
 # ==============================================================================
 
-def BiConjGradStab(A, b, x, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
+def BiConjGradStab(A, b, x, tol=1e-9, ord=np.inf, maxiter=int(1e3)):
     """
     Bi-Conjugate Gradient Stabilized
     """

@@ -5,9 +5,10 @@ iterative solvers for linear systems
 """
 
 import numpy as np
+import scipy as sp
 
 
-def Jacobi(A, b, x, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
+def Jacobi(A, b, x, tol=1e-9, ord=np.inf, maxiter=int(1e3)):
     print("\n=== Jacobi method ===")
 
     # use A = D + L + U
@@ -15,7 +16,7 @@ def Jacobi(A, b, x, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
     # LU = A - D
     # it_log = []
     # res_log = []
-    # for it in range(0, max_iter+1):
+    # for it in range(0, maxiter+1):
     #     x_old = np.copy(x)
     #     x = np.dot(np.linalg.inv(D), b - np.dot(LU, x))
     #     # res = np.linalg.norm(b - np.dot(A, x))
@@ -41,7 +42,7 @@ def Jacobi(A, b, x, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
 
     it_log = []
     res_log = []
-    for it in range(0, max_iter+1):
+    for it in range(0, maxiter+1):
         # x_old = np.copy(x)
         # x = np.dot(M, x) + c
         # res = np.linalg.norm(x - x_old, ord=ord)
@@ -59,7 +60,7 @@ def Jacobi(A, b, x, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
     return x, it_log, res_log, rho
 
 
-def DampedJacobi(A, b, x, omega=.6, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
+def DampedJacobi(A, b, x, omega=.6, tol=1e-9, ord=np.inf, maxiter=int(1e3)):
     print("\n=== Damped Jacobi method ===")
     # alternative form: use A = D - (L + U)
     D = np.diag(np.diag(A))
@@ -74,7 +75,7 @@ def DampedJacobi(A, b, x, omega=.6, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
 
     it_log = []
     res_log = []
-    for it in range(0, max_iter+1):
+    for it in range(0, maxiter+1):
         x = np.dot(M, x) + c
         r = b - np.dot(A, x)
         res = np.linalg.norm(r, ord=ord)
@@ -88,7 +89,7 @@ def DampedJacobi(A, b, x, omega=.6, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
     return x, it_log, res_log, rho
 
 
-def GaussSeidel(A, b, x, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
+def GaussSeidel(A, b, x, tol=1e-9, ord=np.inf, maxiter=int(1e3)):
     print("\n=== Gauss-Seidel method ===")
     # use A = D + L + U
     # D = np.diag(np.diag(A))
@@ -96,7 +97,7 @@ def GaussSeidel(A, b, x, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
     # U = np.triu(A, k=1)
     # it_log = []
     # res_log = []
-    # for it in range(0, max_iter+1):
+    # for it in range(0, maxiter+1):
     #     x_old = np.copy(x)
     #     x = np.dot(np.linalg.inv(D + L), b - np.dot(U, x))
     #     res = np.linalg.norm(x - x_old, ord=ord)
@@ -122,7 +123,7 @@ def GaussSeidel(A, b, x, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
 
     it_log = []
     res_log = []
-    for it in range(0, max_iter+1):
+    for it in range(0, maxiter+1):
         x = np.dot(M, x) + c
         r = b - np.dot(A, x)
         res = np.linalg.norm(r, ord=ord)
@@ -136,7 +137,7 @@ def GaussSeidel(A, b, x, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
     return x, it_log, res_log, rho
 
 
-def SOR(A, b, x, omega=1.4, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
+def SOR(A, b, x, omega=1.4, tol=1e-9, ord=np.inf, maxiter=int(1e3)):
     print("\n=== Successive Over-Relaxation method ===")
     # use A = D + L + U
     # D = np.diag(np.diag(A))
@@ -144,7 +145,7 @@ def SOR(A, b, x, omega=1.4, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
     # U = np.triu(A, k=1)
     # it_log = []
     # res_log = []
-    # for it in range(0, max_iter+1):
+    # for it in range(0, maxiter+1):
     #     x_old = np.copy(x)
     #     x = np.dot(np.linalg.inv(D + omega * L), (1. - omega) * np.dot(D, x) - omega * np.dot(U, x) + omega * b)
     #     res = np.linalg.norm(x - x_old, ord=ord)
@@ -170,7 +171,7 @@ def SOR(A, b, x, omega=1.4, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
 
     it_log = []
     res_log = []
-    for it in range(0, max_iter+1):
+    for it in range(0, maxiter+1):
         x = np.dot(M, x) + c
         r = b - np.dot(A, x)
         res = np.linalg.norm(r, ord=ord)
@@ -184,13 +185,13 @@ def SOR(A, b, x, omega=1.4, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
     return x, it_log, res_log, rho
 
 
-def SteepDesc(A, b, x, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
+def SteepDesc(A, b, x, tol=1e-9, ord=np.inf, maxiter=int(1e3)):
     print("\n=== Steepest Descent method ===")
     r = b - np.dot(A, x)
     it_log = []
     res_log = []
     alpha_log = []
-    for it in range(0, max_iter+1):
+    for it in range(0, maxiter+1):
         Ar = np.dot(A, r)
         alpha = np.dot(r, r) / np.dot(r, Ar)
         x += alpha * r
@@ -207,21 +208,47 @@ def SteepDesc(A, b, x, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
     return x, it_log, res_log, alpha_log
 
 
-def ConjDir(A, b, x, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
+def ConjDir(A, b, x, tol=1e-9, ord=np.inf, maxiter=int(1e3)):
     print("\n=== Conjugate Direction method ===")
     raise NotImplementedError
 
 
-def ConjGrad(A, b, x, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
+def ConjGrad(
+        A, b, x,
+        tol=1e-9, ord=np.inf, maxiter=int(1e3), precond=None
+):
     print("\n=== Conjugate Gradient method ===")
-    r0 = b - np.dot(A, x)
-    p = np.copy(r0)
+
+    if precond is None:
+        print(f">>> preconditioner not used")
+        apply_precond = lambda r: r
+
+    elif precond == "diag":
+        print(f">>> using diagonal preconditioner (Jacobi)")
+        M_inv = 1.0 / np.diag(A)
+        apply_precond = lambda r: M_inv * r
+
+    elif precond == "ilu":
+        print(f">>> using Incomplete LU preconditioner")
+        A_sparse = sp.sparse.csc_matrix(A)
+        ilu = sp.sparse.linalg.spilu(A_sparse)
+        apply_precond = lambda r: ilu.solve(r)
+
+    else:
+        raise ValueError(f"{precond} is not a valid preconditioner")
+
+    r0 = b - A @ x
+    z0 = apply_precond(r0)
+    p = np.copy(z0)
+
     it_log = []
     res_log = []
     alpha_log = []
-    for it in range(0, max_iter+1):
-        Ap = np.dot(A, p)
-        alpha = np.dot(r0, r0) / np.dot(p, Ap)
+
+    for it in range(0, maxiter + 1):
+        Ap = A @ p
+        rz0 = np.dot(r0, z0)
+        alpha = rz0 / np.dot(p, Ap)
         x += alpha * p
         r1 = r0 - alpha * Ap
         res = np.linalg.norm(r1, ord=ord)
@@ -231,9 +258,11 @@ def ConjGrad(A, b, x, tol=1e-9, ord=np.inf, max_iter=int(1e3)):
         alpha_log.append(alpha)
         if res < tol:
             break
-        beta = np.dot(r1, r1) / np.dot(r0, r0)
-        p = r1 + beta * p
-        r0 = np.copy(r1)
+        z1 = apply_precond(r1)
+        beta = np.dot(r1, z1) / rz0
+        p = z1 + beta * p
+        r0 = r1
+        z0 = z1
+
     print(f">>> res: {res:.6e} / tol: {tol:.6e}")
-    # print(f">>> converged to x: {x}")
     return x, it_log, res_log, alpha_log
