@@ -81,8 +81,8 @@ def main():
     ax.set(
         xscale="linear",
         yscale="log",
-        # xlim=(0, args.i),
-        # ylim=(1e-10, 1e2),
+        xlim=(0, args.i),
+        ylim=(1e-10, 1e2),
         xlabel="# of iteration",
         ylabel=r"$\| r \|_{\infty}$",
         title=r"Sherman1, $x \in \mathbb{R}^{1000}$",
