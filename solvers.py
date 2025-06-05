@@ -217,14 +217,14 @@ def ConjGrad(
         A, b, x,
         tol=1e-9, ord=np.inf, maxiter=int(1e3), precond=None
 ):
-    print("\n=== Conjugate Gradient method ===")
+    print("\n=== BEGIN: conjugate gradient method ===")
 
     if precond is None:
         print(f">>> preconditioner not used")
         apply_precond = lambda r: r
 
     elif precond == "diag":
-        print(f">>> using diagonal preconditioner (Jacobi)")
+        print(f">>> using diag preconditioner")
         M_inv = 1.0 / np.diag(A)
         apply_precond = lambda r: M_inv * r
 
@@ -241,6 +241,17 @@ def ConjGrad(
     z0 = apply_precond(r0)
     p = np.copy(z0)
 
+    # # compute the condition number
+    # cond = np.linalg.cond(A, p=2)
+    # # condition number after preconditioning
+    # if precond is not None:
+    #     A_precond = A @ np.linalg.inv(np.diag(np.diag(A)))
+    #     cond_precond = np.linalg.cond(A_precond, p=2)
+    #     rho_precond = np.max(np.abs(np.linalg.eigvals(A_precond)))
+    #     print(f">>> condition number of preconditioned A: {cond_precond:.6e}")
+    # else:
+    #     print(f">>> condition number of A: {cond:.6e}")
+
     it_log = []
     res_log = []
     alpha_log = []
@@ -252,10 +263,12 @@ def ConjGrad(
         x += alpha * p
         r1 = r0 - alpha * Ap
         res = np.linalg.norm(r1, ord=ord)
-        print(f">>> it: {it:d}, res: {res:.6e}")
+
+        # print(f">>> it: {it:d}, res: {res:.6e}")
         it_log.append(it)
         res_log.append(res)
         alpha_log.append(alpha)
+
         if res < tol:
             break
         z1 = apply_precond(r1)
@@ -265,4 +278,5 @@ def ConjGrad(
         z0 = z1
 
     print(f">>> res: {res:.6e} / tol: {tol:.6e}")
+    print("=== END: conjugate gradient method ===\n")
     return x, it_log, res_log, alpha_log
